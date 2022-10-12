@@ -1,13 +1,17 @@
 package main
 
 import (
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 var fio = map[string]string{
 	"Kuznetsov": "Peter"}
+var diceroll = map[int]int{
+	1: 1}
 
 func GetName(c *gin.Context) {
 
@@ -58,6 +62,21 @@ func DeleteName(c *gin.Context) {
 		nameLast: nameName,
 	})
 }
+func PostDice(c *gin.Context) {
+	diceType := c.Query("D range")
+	diceSize := diceroll[diceType]
+	if diceSize <= 0 {
+		c.JSON(400, gin.H{
+			diceType: "",
+		})
+		return
+	}
+	rand.Seed(time.Now().UnixNano())
+	diceResult := (rand.Intn(diceSize))
+	c.JSON(200, gin.H{
+		diceSize: diceResult,
+	})
+}
 func main() {
 	r := gin.Default()
 	r.GET("/test", func(c *gin.Context) {
@@ -65,6 +84,7 @@ func main() {
 			"message": "hi",
 		})
 	})
+	r.GET("/dice", PostDice)
 	rGroup := r.Group("/name")
 	rGroup.GET("", GetName)
 	rGroup.POST("", PostName)
