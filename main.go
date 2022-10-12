@@ -23,6 +23,28 @@ func GetName(c *gin.Context) {
 		nameLast: nameName,
 	})
 }
+func PostName(c *gin.Context) {
+	nameLast := c.Query("Last name")
+	nameName := c.Query("First name")
+	if len(nameLast) == 0 || len(nameName) == 0 {
+
+		c.JSON(400, gin.H{
+			nameLast: nameName,
+		})
+		return
+	}
+	if _, ok := fio[nameLast]; ok {
+		c.JSON(409, gin.H{
+			"message": "FIO already exists",
+		})
+		return
+	}
+	fio[nameLast] = nameName
+	c.JSON(201, gin.H{
+		nameLast: nameName,
+	})
+}
+
 func main() {
 	r := gin.Default()
 	r.GET("/test", func(c *gin.Context) {
@@ -32,7 +54,7 @@ func main() {
 	})
 	rGroup := r.Group("/name")
 	rGroup.GET("", GetName)
-	//rGroup.POST("",PostName)
+	rGroup.POST("", PostName)
 	//rGroup.DELETE("",DeleteName)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
