@@ -7,29 +7,29 @@ import (
 	"time"
 )
 
-func DiceCheckNil(diceRng *int) {
+func DiceCheckNil(diceMaxNum *int) {
 
-	if *diceRng <= 0 {
+	if *diceMaxNum <= 0 {
 		panic("Dice sides must be > 0")
 	}
 }
 
-func DiceThrow(diceRoll int) int {
+func Get_DiceThrowResult(diceResult int) int {
 	rand.Seed(time.Now().UnixNano())
-	diceRoll = (rand.Intn(diceRoll))
-	diceRoll += 1
-	return diceRoll
+	diceResult = (rand.Intn(diceResult))
+	diceResult += 1
+	return diceResult
 }
 
 func PostDice(c *gin.Context) {
 	diceSideNumber := c.Query("DiceRange")
-	diceRng, err := strconv.Atoi(diceSideNumber)
+	diceMaxNum, err := strconv.Atoi(diceSideNumber)
 	if err != nil {
 		c.JSON(400, "")
 	}
-	DiceCheckNil(&diceRng)
+	DiceCheckNil(&diceMaxNum)
 	c.JSON(200, gin.H{
-		"Result": DiceThrow(diceRng),
+		"Result": Get_DiceThrowResult(diceMaxNum),
 	})
 }
 func main() {
