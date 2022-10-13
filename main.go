@@ -14,19 +14,22 @@ func DiceCheckNil(diceRng *int) {
 	}
 }
 
-func DiceThrow(diceRng *int) {
+func DiceThrow(diceRoll int) int {
 	rand.Seed(time.Now().UnixNano())
-	*diceRng = (rand.Intn(*diceRng))
-	*diceRng += 1
+	diceRoll = (rand.Intn(diceRoll))
+	diceRoll += 1
+	return diceRoll
 }
 
 func PostDice(c *gin.Context) {
 	diceSideNumber := c.Query("DiceRange")
-	diceRng, _ := strconv.Atoi(diceSideNumber)
+	diceRng, err := strconv.Atoi(diceSideNumber)
+	if err != nil {
+		c.JSON(400, "")
+	}
 	DiceCheckNil(&diceRng)
-	DiceThrow(&diceRng)
 	c.JSON(200, gin.H{
-		"Result": diceRng,
+		"Result": DiceThrow(diceRng),
 	})
 }
 func main() {
