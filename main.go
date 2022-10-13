@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 )
+
 func DiceCheckNil (diceRng *int){
 	if diceRng<= 0 {
 
