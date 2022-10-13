@@ -7,21 +7,26 @@ import (
 	"time"
 )
 
-func DiceCheckNil(diceRng *int, err *error) {
+func DiceCheckNil(diceRng *int) {
 
 	if *diceRng <= 0 {
-		panic(err)
+		panic("Dice sides must be <0")
 	}
 }
+
+func DiceThrow(diceRng *int) {
+
+	rand.Seed(time.Now().UnixNano())
+	*diceRng = (rand.Intn(*diceRng))
+	*diceRng += 1
+}
+
 func PostDice(c *gin.Context) {
 	diceSideNumber := c.Query("DiceRange")
 
-	diceRng, err := strconv.Atoi(diceSideNumber)
-
-	DiceCheckNil(&diceRng, &err)
-	rand.Seed(time.Now().UnixNano())
-	diceRng = (rand.Intn(diceRng))
-	diceRng += 1
+	diceRng, _ := strconv.Atoi(diceSideNumber)
+	DiceCheckNil(&diceRng)
+	DiceThrow(&diceRng)
 	c.JSON(200, gin.H{
 		"Result": diceRng,
 	})
