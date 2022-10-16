@@ -1,7 +1,7 @@
 package main
 
 import (
-	chk "dnd/DiceCheck/DiceCheck.go"
+	chk "github.com/dnd/"
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"strconv"
