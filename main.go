@@ -1,18 +1,12 @@
 package main
 
 import (
+	chk "dnd/DiceCheck/DiceCheck.go"
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"strconv"
 	"time"
 )
-
-func DiceCheckNil(diceMaxNum *int) {
-
-	if *diceMaxNum <= 0 {
-		panic("Dice sides must be > 0")
-	}
-}
 
 func Get_DiceThrowResult(diceResult int) int {
 	rand.Seed(time.Now().UnixNano())
@@ -27,7 +21,7 @@ func PostDice(c *gin.Context) {
 	if err != nil {
 		c.JSON(400, "")
 	}
-	DiceCheckNil(&diceMaxNum)
+	chk.DiceCheckNil(&diceMaxNum)
 	c.JSON(200, gin.H{
 		"Result": Get_DiceThrowResult(diceMaxNum),
 	})
