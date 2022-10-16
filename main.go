@@ -1,7 +1,7 @@
 package main
 
 import (
-	chk "github.com/filippgerman/dnd/blob/0c3a82ba0925aed9f2f47afc307b94f46713eee3/DiceChecking/"
+	chk "github.com/filippgerman/dnd/blob/e8e01b736093616d9bae87ab43058e0b492c8f0a/DiceChecking/DiceCheck"
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"strconv"

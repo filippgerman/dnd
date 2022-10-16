@@ -1,4 +1,4 @@
-package DiceCheck
+package DiceChecking
 
 func DiceCheckNil(diceMaxNum *int) {
 
